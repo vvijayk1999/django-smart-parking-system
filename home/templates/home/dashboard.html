@@ -1,0 +1,107 @@
+{% extends "home/base.html" %}
+{% block navbarlist %}
+    <li><a class="active" href="#">Home</a></li>
+    <li><a href="#balance">My Balance</a></li>
+    <li><a href="#">Add E-Cash</a></li>
+    <li><a href="/logout">Logout</a></li>
+    <li><a href="#">About</a></li>
+{% endblock navbarlist %}
+{% block content %}
+
+    <div id="book_a_slot">
+        <h3 style="color: #FFF;">Hello there, {{ user.username }}</h3><br><br>
+        <center>
+            <h2 style="color: #FFF;">Book Parking Slots :</h2></center>
+            <div class="book-slots">
+                <div class="card-body-slots">
+                    <div style="text-align: center;">
+                        <form id="booking-form" action="home" method="POST">
+                            {% csrf_token %}
+                            <div style="display: inline;">
+                                <input type="text" class="datepicker" placeholder="Date" name="Date">
+                            </div>
+                            <div style="display:inline-block;">
+                                <input type="text" class="timepicker" placeholder="Time" name="Time">
+                            </div>
+                            <div style="display: inline;">
+                                <button type="submit" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Book my slot</button>
+                            </div> <br>
+                            <div>
+                                <h4 style="display: inline;">Select place : </h4>
+                                <select style="display:inline-block;" class="select_places" id="select_places" onchange="updateMap()" name="place">
+                                    <option disabled selected value> -- select an option -- </option>
+                                    {%for place in places %}
+                                    <option value="{{place.value}}">{{place.name}}</option>
+                                    {% endfor %}
+                                </select> 
+                            </div>
+                        </form><br>
+                        <div id='map' style='width:auto; height: 300px; align-self:stretch'></div>
+                        <script>
+                            mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtcGF0aHNhbSIsImEiOiJjanNybDU2ZHAwN3d2NDNwNGUzdzRqNXZ5In0.D4gRrSnSPep_O9Txw55fkQ';
+                            var map = new mapboxgl.Map({
+                                container: 'map',
+                                style: 'mapbox://styles/mapbox/streets-v11',
+                                center: [77.59, 13.0], // starting position
+                                zoom: 10
+                            });
+                            map.addControl(new mapboxgl.NavigationControl());
+                            map.scrollZoom.disable();
+                        </script>
+                    </div>
+                </div>
+            </div><br>
+            </div>
+    <div id="parking_history">
+        <center><h2 style="color: #FFF;">Your Parking History :</h2></center>
+    <!-- Parking Card Dynamic-->
+    {%for parkingCard in parkingCards %}
+    <div class="card card-4">
+        <div class="card-body-slots">
+            <div>
+                <label class="label"><h3>{{parkingCard.place}}</h3></label>
+                <label class="label">Arrival Time : {{parkingCard.arrival_time}}</label>
+                <label class="label">Departure Time : {{parkingCard.departure_time}}</label>
+                <label class="label">Date : {{parkingCard.date}}</label>
+                <label class="label">Price : {{parkingCard.price}}</label>
+            </div>
+        </div>
+    </div><br>
+    {% endfor %}
+    <!-- end  -->
+    </div>
+    <div id="balance">
+        <center><h2 style="color: #FFF;">My Balance :</h2></center>
+    <div class="card card-4">
+        <div class="card-body-slots">
+            <div>
+
+
+                <label class="label"><h3>Available Rs : {{balanceCard.current}}</h3></label>
+                <label class="label">Due Rs : {{balanceCard.due}}</label>
+
+            </div>
+        </div>
+    </div><br>
+    </div>
+
+    <script>
+    function updateMap(){
+        var place = document.getElementById("select_places");
+        var pos;
+        switch(place.value)
+        {
+            {%for place in places %}
+                case "{{place.value}}" : pos = [{{place.longitude}}, {{place.latitude}}];break;
+            {% endfor %}
+        }
+        var map = new mapboxgl.Map({
+                            container: 'map',
+                            style: 'mapbox://styles/mapbox/streets-v11',
+                            center: pos, // starting position
+                            zoom: 16
+                        });
+                        map.addControl(new mapboxgl.NavigationControl());
+    }
+    </script>
+{% endblock content %}

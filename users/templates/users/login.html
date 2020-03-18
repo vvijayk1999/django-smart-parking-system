@@ -1,0 +1,38 @@
+<!--{% extends "home/base.html" %}
+{% block navbarlist %}
+    <li><a class="active" href="#">Home</a></li>
+    <li><a href="/users/register">Register</a></li>
+    <li><a href="#">About</a></li>
+{% endblock navbarlist %} 
+{% block content %} -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+    </head>
+    <body>
+        <div class="card card-4">
+            <div class="card-body">
+                <h2 class="title">Login</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <div class="input-group">
+                        <button class="btn btn--radius-2 btn--blue" type="submit">LOGIN</button>
+                    </div>
+                    <div class="input-group">
+                        <a href="/users/register" name>Don't have an account?. Register now.</a>
+                    </div>
+                </form>
+                <diV>
+                    {% for message in messages %}
+                    <h4> {{message}} </h4>
+                    {% endfor %}
+                </diV>
+            </div>
+        </div>
+    </body>
+    </html>
+<!--{% endblock content %}-->

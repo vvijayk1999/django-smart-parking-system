@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>{{ title }}</title>
+
+    <!-- Date and Time picker CSS-->
+    <link rel="stylesheet" href="{% static 'css/datetime.css' %}">
+    
+    <!-- Icons font CSS-->
+    <link href="{% static 'fonts/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'fonts/font-awesome.min.css' %}" rel="stylesheet" media="all">
+
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Main CSS-->
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" media="all">
+
+    <!-- MapBox-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css' rel='stylesheet' />
+
+    <link href="{% static 'css/datetimeconf.css' %}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+    <nav>
+        <input type="checkbox" id="check">
+        <label for="check" class="checkbtn">
+          <i class="fas fa-bars"></i>
+        </label>
+        <label class="logo">Smart Parking system</label>
+        <ul>
+          {% block navbarlist %}{% endblock %}
+        </ul>
+    </nav>
+    <div class="page-wrapper bg-gra-02 p-t-100 p-b-100 font-poppins">
+      <div class="wrapper wrapper--w680">
+        {% if messages %}
+          {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+          {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Date and Time picker JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{% static 'js/datetimeconf.js' %}"></script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

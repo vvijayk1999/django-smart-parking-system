@@ -1,0 +1,41 @@
+.dropdown-content li span{
+    color: #e23078;
+}
+.datepicker-date-display{
+    background-color:#e23078;
+    color:#fff;
+}
+.datepicker-table td.is-selected{
+    background-color:#e23078;
+    color:#fff
+}
+.datepicker-date-display{
+    background-color:#e23078;
+}
+.datepicker-table td.is-today{
+    color:#e23078
+}
+.datepicker-table td.is-selected{
+    background-color:#e23078;
+    color:#fff
+}  
+.timepicker-canvas line{
+    stroke:#e23078;
+}
+.timepicker-digital-display{
+    background-color:#e23078;
+}
+.timepicker-canvas-bearing{
+    fill:#e23078
+}
+.timepicker-canvas-bg{
+    fill:#e23078
+}
+
+.datepicker {
+    width: 10%;
+}
+
+.select_places{
+    display: block;
+}

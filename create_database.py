@@ -27,10 +27,9 @@ if __name__ == "__main__":
     createHistoryTable()
 
 
-    addHistoryRecord('KA41EN1051','Yelahanka','20:00','21:00','14 Mar 2020','200')
-    addHistoryRecord('KA41EN1051','Jayamahal','16:25','18:00','13 Mar 2020','100')
-    addHistoryRecord('KA41EN1051','MLA Layout','10:00','13:15','12 Mar 2020','150')
+    addHistoryRecord('ka04781ff','taj hotel','20:00','21:00','14 Mar 2020','200')
+    
     print('Records added')
 
-    deleteHistoryRecord('KA41EN1051')
+    #deleteHistoryRecord('KA41EN1051')
     print('Records deleted')

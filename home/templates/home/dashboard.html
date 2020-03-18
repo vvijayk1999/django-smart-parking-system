@@ -15,27 +15,29 @@
             <div class="book-slots">
                 <div class="card-body-slots">
                     <div style="text-align: center;">
-                        <form id="booking-form" action="home" method="POST">
-                            {% csrf_token %}
-                            <div style="display: inline;">
-                                <input type="text" class="datepicker" placeholder="Date" name="Date">
-                            </div>
-                            <div style="display:inline-block;">
-                                <input type="text" class="timepicker" placeholder="Time" name="Time">
-                            </div>
-                            <div style="display: inline;">
-                                <button type="submit" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Book my slot</button>
-                            </div> <br>
-                            <div>
-                                <h4 style="display: inline;">Select place : </h4>
-                                <select style="display:inline-block;" class="select_places" id="select_places" onchange="updateMap()" name="place">
-                                    <option disabled selected value> -- select an option -- </option>
-                                    {%for place in places %}
-                                    <option value="{{place.value}}">{{place.name}}</option>
-                                    {% endfor %}
-                                </select> 
-                            </div>
-                        </form><br>
+                        <div style="display: inline;">
+                            <input type="text" class="datepicker" onchange="changed()" placeholder="Date" name="Date" id="date_input">
+                        </div>
+                        <div style="display:inline-block;">
+                            <input type="text" class="timepicker" onchange="changed()" placeholder="Time" name="Time" id="time_input">
+                        </div><br><br>
+                        <div style="display: inline;">
+                            <button id="checkslots_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Check for free slots</button>
+                        </div>
+                        <div style="display: inline;">
+                            <button type="submit" id="book_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Book slot</button>
+                        </div>
+                        <div>
+                            <h4 style="display: inline;">Select place : </h4>
+                            <select style="display:inline-block;" class="select_places" id="select_places" onchange="updateMap()" name="place">
+                                <option disabled selected value> -- select an option -- </option>
+                                {%for place in places %}
+                                <option value="{{place.value}}">{{place.name}}</option>
+                                {% endfor %}
+                            </select> 
+                        </div>
+                        <div id="slotresult"></div>
+                        <br>
                         <div id='map' style='width:auto; height: 300px; align-self:stretch'></div>
                         <script>
                             mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtcGF0aHNhbSIsImEiOiJjanNybDU2ZHAwN3d2NDNwNGUzdzRqNXZ5In0.D4gRrSnSPep_O9Txw55fkQ';
@@ -104,4 +106,5 @@
                         map.addControl(new mapboxgl.NavigationControl());
     }
     </script>
+    
 {% endblock content %}

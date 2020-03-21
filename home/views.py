@@ -3,6 +3,11 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import ParkingCards
+
+from billing_system import *
+import multiprocessing as mp
+
+
 # Create your views here.
 import sqlite3
 import datetime
@@ -14,11 +19,17 @@ c = conn.cursor()
 
 try:
     c.execute('''CREATE TABLE History
-    (v_id text ,place text,arrival_time text,departure_time text,date text,amount text)''')
+         (v_id text,model text,arrival_time text,departure_time text,slot_no text,place text,current_date text,amount text)''')
     print ("table History done")
     conn.commit()
 except:
     print("Table History is already created")
+
+#################################################################
+p1 = mp.Process(target=billing_system)
+p1.start()
+print('\nBilling sytem process is running . . .\n')
+#################################################################
 
 @login_required
 def dashboard(request):
@@ -33,11 +44,11 @@ def dashboard(request):
         parkingCards = []
         for i in items:
             _ = ParkingCards()
-            _.place = i[1]
+            _.place = i[-3]
             _.arrival_time = i[2]
             _.departure_time = i[3]
-            _.date = i[4]
-            _.price = i[5]
+            _.date = i[-2]
+            _.price = i[-1]
             parkingCards.append(_)
         return render(request,'home/dashboard.html',{'title': 'Dashboard','parkingCards': parkingCards})
 

@@ -16,7 +16,7 @@ checkslots_btn.addEventListener("click",function(){
     $.ajax({
         type:"GET",
         headers: { "X-CSRFToken": token },
-        url: 'http://'+window.location.hostname+':8000/request/',
+        url: 'http://'+window.location.hostname+':'+location.port+'/request/',
         data: {
             date : _date,
             time : _time,

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import ParkingCards
+from .models import ParkingCards, Slots
 
 from billing_system import *
 import multiprocessing as mp
@@ -16,6 +16,7 @@ global conn
 conn = sqlite3.connect('smart_parking_system.db',check_same_thread=False)
 global c
 c = conn.cursor()
+
 
 try:
     c.execute('''CREATE TABLE History
@@ -50,7 +51,22 @@ def dashboard(request):
             _.date = i[-2]
             _.price = i[-1]
             parkingCards.append(_)
-        return render(request,'home/dashboard.html',{'title': 'Dashboard','parkingCards': parkingCards})
+        slot1 = Slots()
+        slot1.color = '#46cf46'
+        slot1.slot_number = 'A1'
+
+        slot2 = Slots()
+        slot2.color = '#eb2f2f'
+        slot2.slot_number = 'A2'
+
+        slot3 = Slots()
+        slot3.color = '#eb2f2f'
+        slot3.slot_number = 'A3'
+
+
+        slots = [slot1,slot2,slot3]
+        
+        return render(request,'home/dashboard.html',{'title': 'Dashboard','parkingCards': parkingCards, 'slots': slots})
 
 def main(request):
     return render(request,'home/index.html',{'title': 'Smart Parking System'})

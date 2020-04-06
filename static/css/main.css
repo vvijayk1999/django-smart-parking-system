@@ -784,12 +784,31 @@ section{
   padding-bottom: 65px;
 }
 
+.slots-info {
+  padding: 10px 10px;
+  border: #525252;
+  border-style: solid;
+  border-width: 3px;
+}
+
 .book-slots{
   background: #fff;
   margin-bottom: 10px;
   -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
   box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+}
+
+
+.slot{
+  padding: 10px 10px;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  width: fit-content;
+  height: fit-content;
+  display: inline-block;
+  margin: 6px;
+  border-radius: 10%;
 }
 
 /*

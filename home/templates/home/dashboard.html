@@ -38,6 +38,14 @@
                         </div>
                         <div id="slotresult"></div>
                         <br>
+                        <div class="slots-info">
+                            {%for slot in slots %}
+                                <div class="slot" style="background-color: {{slot.color}}; ">
+                                    <h2 style="color: #FFF;">{{slot.slot_number}}</h2>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <br>
                         <div id='map' style='width:auto; height: 300px; align-self:stretch'></div>
                         <script>
                             mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtcGF0aHNhbSIsImEiOiJjanNybDU2ZHAwN3d2NDNwNGUzdzRqNXZ5In0.D4gRrSnSPep_O9Txw55fkQ';

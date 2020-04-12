@@ -25,7 +25,7 @@ SECRET_KEY = '5ijxw_4ocl$(wqhbwe4fg-ua8cs4ipfvjk$!$uhuo)stks%lk_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.31.111','127.0.0.1','192.168.31.112']
+ALLOWED_HOSTS = ['192.168.31.111','127.0.0.1','192.168.31.112','192.168.31.26']
 
 
 # Application definition
@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'account.apps.AccountConfig',
     'apprequests.apps.ApprequestsConfig',
+    'rest_framework.authtoken',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +44,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -28,8 +28,8 @@ except:
 
 #################################################################
 p1 = mp.Process(target=billing_system)
-p1.start()
-print('\nBilling sytem process is running . . .\n')
+#p1.start()
+#print('\nBilling sytem process is running . . .\n')
 #################################################################
 
 @login_required

@@ -1,14 +1,13 @@
 {% extends "home/base.html" %}
 {% block navbarlist %}
-    <li><a class="active" href="#">Home</a></li>
-    <li><a href="/users/login">Login</a></li>
-    <li><a href="#">About</a></li>
+    <li><a href="/login">Login</a></li>
+    <li><a href="/about">About</a></li>
 {% endblock navbarlist %}
 {% block content %}
     <div class="card card-4">
         <div class="card-body">
             <h2 class="title">Registration Form</h2>
-            <a href="/users/login" name>Have an account already?. Login now.</a>
+            <a href="/login" name>Have an account already?. Login now.</a>
             <form id="register-form" action="register" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}

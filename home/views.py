@@ -68,5 +68,5 @@ def dashboard(request):
         
         return render(request,'home/dashboard.html',{'title': 'Dashboard','parkingCards': parkingCards, 'slots': slots})
 
-def main(request):
-    return render(request,'home/index.html',{'title': 'Smart Parking System'})
+def about(request):
+    return render(request,'home/about.html',{'title': 'About'})

@@ -28,8 +28,8 @@ except:
 
 #################################################################
 p1 = mp.Process(target=billing_system)
-#p1.start()
-#print('\nBilling sytem process is running . . .\n')
+p1.start()
+print('\nBilling sytem process is running . . .\n')
 #################################################################
 
 @login_required
@@ -70,3 +70,21 @@ def dashboard(request):
 
 def about(request):
     return render(request,'home/about.html',{'title': 'About'})
+
+def slotInfo(request):
+
+    body = ''
+    c.execute("SELECT * FROM Slots ")
+    result=c.fetchall()
+    for row in result:
+        print(row)
+        color = '#0F0'
+        if row[1] == "1":
+            color = "#F00"
+        number = row[0]
+        div = '<div class="slot" style="background-color: '+color+'; "><h2 style="color: #FFF;">'+str(number)+'</h2></div>'
+        body+=div
+
+    html = '<div class="slots-info">'+body+'</div>'
+
+    return HttpResponse(html)

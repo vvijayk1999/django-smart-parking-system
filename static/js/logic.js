@@ -1,6 +1,30 @@
 checkslots_btn = document.getElementById('checkslots_btn');
 slotsContainer = document.getElementById("slotresult");
 book_btn = document.getElementById('book_btn');
+update_slot_cards = document.getElementById('update-slot-cards');
+
+var token = '{{csrf_token}}';
+
+function updateSlotCards(){
+  $.ajax({
+    type:"GET",
+    headers: { "X-CSRFToken": token },
+    url: 'http://'+window.location.hostname+':'+location.port+'/slot-info',
+    success: function (response) {
+      document.getElementById('update-slot-cards').innerHTML = response;
+    },
+    complete: function(data){
+      setTimeout(updateSlotCards,5000);
+     },
+    error: function(request, error){
+      document.getElementById('update-slot-cards').innerHTML = '<div class="slots-info"><h4>Error updating the slot information, Please check your Internet connection.</h4></div>';
+    }
+  });
+}
+
+$(document).ready(function(){
+  setTimeout(updateSlotCards,5000);
+ });
 
 book_btn.disabled = true;
 book_btn.style.background = '#999999';

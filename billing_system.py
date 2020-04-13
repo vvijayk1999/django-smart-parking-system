@@ -28,30 +28,42 @@ def connect():
     c = conn.cursor()
     
 def Values(message):
+    print(message)
     parsed_json = (json.loads(message))
-    print(parsed_json)
+    Topic=(parsed_json['topic'])
+    if(Topic=="slot_details"):
+        v_id=(parsed_json['number_plate'])
+        model=(parsed_json['brand'])
+        arrival_time=(parsed_json['entry_time'])
+        departure_time=(parsed_json['exit_time'])
+        slot_no=(parsed_json['slot_number'])
+        place=(parsed_json['place_name'])
+        current_date = str(date.today())
 
-    v_id = parsed_json[0]['number_plate']
-    model = parsed_json[0]['brand']
-    arrival_time = parsed_json[0]['entry_time']
-    departure_time = parsed_json[0]['exit_time']
-    slot_no = parsed_json[0]['slot_number']
-    place = parsed_json[0]['place_name']
-    current_date = str(date.today())
-    
-    amount = '0'
-    
-    FMT = '%H:%M:%S'
-    duration = datetime.strptime(departure_time , FMT) - datetime.strptime(arrival_time , FMT)
-    hours = time.strptime(str(duration), FMT)
-    x=hours.tm_hour
-    if x==1:
-        amount = str(30)
-    elif x>=2:
-        amount=str(int(30)+x*int(10))
-    print(v_id,model)
-    c.execute("INSERT INTO History VALUES('"+v_id+"','"+model+"','"+arrival_time+"','"+departure_time+"','"+str(slot_no)+"','"+place+"','"+current_date+"','"+amount+"')")
-    print("row inserted")
+        FMT = '%H:%M:%S'
+
+        duration = datetime.strptime(departure_time , FMT) - datetime.strptime(arrival_time , FMT)
+        hours = time.strptime(str(duration), FMT)
+        x=hours.tm_hour
+        if x==1:
+            amount = str(30)
+        elif x>=2:
+            amount=str(int(30)+x*int(10))
+        print(v_id,model,arrival_time,departure_time,slot_no,place,current_date,amount)
+        
+        #c.execute("INSERT INTO Data VALUES('"+v_id+"','"+model+"','"+arrival_time+"','"+departure_time+"','"+slot_no+"','"+place+"','"+current_date+"','"+amount+"')")
+        c.execute("INSERT INTO History VALUES('"+v_id+"','"+model+"','"+arrival_time+"','"+departure_time+"','"+str(slot_no)+"','"+place+"','"+current_date+"','"+amount+"')")
+
+        print("row inserted")
+        c.execute("UPDATE Slots SET status = '0' WHERE slot_num = '+slot_no+' and place='+place+'")
+        print("row updated") 
+    elif(Topic=="slot_status"):
+        slot_num=(parsed_json['slot_number'])
+        status=(parsed_json['occupancy'])
+        place=(parsed_json['place_name'])
+        print(slot_num,status)
+        c.execute("INSERT INTO Slots VALUES('"+slot_num+"','"+status+"','"+place+"')")
+        print("row inserted")  
     conn.commit()
           
 def CloseConnection():

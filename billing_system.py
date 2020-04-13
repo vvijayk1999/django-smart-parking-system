@@ -9,16 +9,16 @@ broker_address= "34.93.196.242"
 port = 1883 #portNumber
 #user = "<username>"
 #password = "<password>"
-topic = "getSlotDetails"
+topic = "337f97625dfbdf37959f887b"
 #----------------------------------------------------------------------
 
 def billing_system():
     connect()
-    client = mqtt.Client('parkingsystem')
+    client = mqtt.Client('vvijayk1999')
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(broker_address,port, 60)
-    client.on_log=on_log
+    #client.on_log=on_log
     client.loop_forever()
 
 def connect():

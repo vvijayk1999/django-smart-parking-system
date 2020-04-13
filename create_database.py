@@ -32,12 +32,16 @@ def deleteHistoryRecord(v_id):
     c.execute("DELETE FROM History WHERE v_id='"+v_id+"'")
     conn.commit()
 
+def deleteAllSlotRecord():
+    c.execute("DELETE FROM Slots")
+    conn.commit()
+
 if __name__ == "__main__":
     #createHistoryTable()
     createSlotsTable()
 
     #addHistoryRecord('ka04781ff','taj hotel','20:00','21:00','14 Mar 2020','200')
-    
+    deleteAllSlotRecord()
     print('Records added')
 
     #deleteHistoryRecord('KA41EN1051')

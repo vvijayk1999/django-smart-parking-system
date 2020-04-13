@@ -77,12 +77,25 @@ def slotInfo(request):
     c.execute("SELECT * FROM Slots ")
     result=c.fetchall()
     for row in result:
-        print(row)
-        color = '#0F0'
-        if row[1] == "1":
-            color = "#F00"
+        bg_color = '#0F0'       #
+        text_color = '#000'     #   Defaults
+        message = 'Available'   #
+
+        if row[1] == "0":   #   Available
+            bg_color = '#46cf46'#  Green
+            text_color = '#000'#Black 
+            message = 'Available'   
+        if row[1] == "1":   #   Occupied
+            bg_color = "#eb2f2f"#  Red
+            text_color = "#FFF"#White
+            message = "Occupied"
+        if row[1] == "2":   #   Reserved
+            bg_color = "#ffa500"#Orange
+            text_color = "#000"#Black
+            message = "Reserved"
+
         number = row[0]
-        div = '<div class="slot" style="background-color: '+color+'; "><h2 style="color: #FFF;">'+str(number)+'</h2></div>'
+        div = '<div class="slot" style="background-color: '+bg_color+'; "><h2 style="color: '+text_color+';">'+str(number)+'</h2><br><h5 style="color:'+text_color+';">'+message+'</h5></div>'
         body+=div
 
     html = '<div class="slots-info">'+body+'</div>'

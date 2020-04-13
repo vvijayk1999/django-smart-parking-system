@@ -38,7 +38,7 @@ def deleteAllSlotRecord():
 
 if __name__ == "__main__":
     #createHistoryTable()
-    createSlotsTable()
+    #createSlotsTable()
 
     #addHistoryRecord('ka04781ff','taj hotel','20:00','21:00','14 Mar 2020','200')
     deleteAllSlotRecord()

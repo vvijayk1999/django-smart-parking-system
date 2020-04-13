@@ -1,15 +1,19 @@
 import paho.mqtt.client as mqtt
 import sqlite3
+from pyfcm import FCMNotification
 import json
 from datetime import date, datetime
 import time
 
 #----------------------------------------------------------------------
-broker_address= "34.93.196.242"
+
+push_service = FCMNotification(api_key="AAAAj7P1O5g:APA91bHUCdu3Pf3pdewj2co-rQO9yFwkWjTm2FKbvHNrMZwrWw6KZ2OUDy_sdilVTXTdBg7KqWh6EH3rt6P34CXNpYrdgSC3eJMPjY-iwx_a5rXXmPCCCUITurpYLpl-Kfe2rz2oNHBn")
+
+broker_address= "35.225.7.175"
 port = 1883 #portNumber
 #user = "<username>"
 #password = "<password>"
-topic = "337f97625dfbdf37959f887b"
+topic = "getSlotDetails"
 #----------------------------------------------------------------------
 
 def billing_system():
@@ -54,6 +58,10 @@ def Values(message):
         #c.execute("INSERT INTO Data VALUES('"+v_id+"','"+model+"','"+arrival_time+"','"+departure_time+"','"+slot_no+"','"+place+"','"+current_date+"','"+amount+"')")
         c.execute("INSERT INTO History VALUES('"+v_id+"','"+model+"','"+arrival_time+"','"+departure_time+"','"+str(slot_no)+"','"+place+"','"+current_date+"','"+amount+"')")
 
+        message_string = "Your vehicle with number "+v_id+" was parked at "+place+" from "+arrival_time+" to "+departure_time+" on "+current_date+". \nYou have been charged Rs."+amount
+
+        sendPushNotifications(v_id,message_string)
+
         print("row inserted")
         c.execute("UPDATE Slots SET status = '0' WHERE slot_num = '+slot_no+' and place='+place+'")
         print("row updated") 
@@ -81,3 +89,17 @@ def on_message(client, userdata, msg):
 def on_log(client, userdata, level, buf):
     print("log: ",buf)
 
+def sendPushNotifications(v_id,message_string):
+
+    try:
+        c.execute("SELECT email FROM users_vid WHERE v_id = '%s'" %v_id)
+        result=c.fetchall()
+        for row in result:
+
+            topic = row[0].split('@')[0]+'%'+row[0].split('@')[1]
+
+            message_title = "Billing was successfull !"
+            result = push_service.notify_topic_subscribers(topic_name=topic, message_body=message_string,message_title=message_title)
+    except:
+        pass
+    

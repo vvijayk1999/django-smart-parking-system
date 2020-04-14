@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import ParkingCards, Slots
+from .models import ParkingCards, Slots, Places
 
 from billing_system import *
 import multiprocessing as mp
@@ -52,15 +52,26 @@ def dashboard(request):
             _.price = i[-1]
             parkingCards.append(_)
         
-        return render(request,'home/dashboard.html',{'title': 'Dashboard','parkingCards': parkingCards})
+        _ = Places()
+        _.latitude = "12.991734"
+        _.longitude = "77.571458"
+        _.value = 'mantri-mall'
+        _.name = 'Mantri Mall'
+
+        #places = ['Mantri Mall','REVA University','Fun World','Manyata Tech Park']
+        places = [_]
+
+        return render(request,'home/dashboard.html',{'title': 'Dashboard','parkingCards': parkingCards,'places':places})
 
 def about(request):
     return render(request,'home/about.html',{'title': 'About'})
 
 def slotInfo(request):
+    
+    place = request.GET['place']
 
     body = ''
-    c.execute("SELECT * FROM Slots ")
+    c.execute("SELECT * FROM Slots WHERE place='"+place+"'")
     result=c.fetchall()
     for row in result:
         bg_color = '#0F0'       #

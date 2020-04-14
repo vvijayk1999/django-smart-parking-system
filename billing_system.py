@@ -18,7 +18,7 @@ topic = "getSlotDetails"
 
 def billing_system():
     connect()
-    client = mqtt.Client('vvijayk1999')
+    client = mqtt.Client('as6g54er6has4')
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(broker_address,port, 60)
@@ -63,7 +63,7 @@ def Values(message):
         sendPushNotifications(v_id,message_string)
 
         print("row inserted")
-        c.execute("UPDATE Slots SET status = '0' WHERE slot_num = '+slot_no+' and place='+place+'")
+        c.execute("UPDATE Slots SET status = '0' WHERE slot_num = '"+slot_no+"' and place='"+place+"'")
         print("row updated") 
     elif(Topic=="slot_status"):
         slot_num=(parsed_json['slot_number'])

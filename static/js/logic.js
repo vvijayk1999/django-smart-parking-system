@@ -2,14 +2,20 @@ checkslots_btn = document.getElementById('checkslots_btn');
 slotsContainer = document.getElementById("slotresult");
 book_btn = document.getElementById('book_btn');
 update_slot_cards = document.getElementById('update-slot-cards');
-
+slotCards = document.getElementsByClassName('slots-info');
 var token = '{{csrf_token}}';
 
+toggleSlot
+
 function updateSlotCards(){
+  var _place = document.getElementById("select_places").value;
   $.ajax({
     type:"GET",
     headers: { "X-CSRFToken": token },
     url: 'http://'+window.location.hostname+':'+location.port+'/slot-info',
+    data: {
+      place : _place
+    },
     success: function (response) {
       document.getElementById('update-slot-cards').innerHTML = response;
     },
@@ -36,6 +42,7 @@ checkslots_btn.addEventListener("click",function(){
     const _date = document.getElementById("date_input").value;
     const _time = document.getElementById("time_input").value;
     const _place = document.getElementById("select_places").value;
+    const _duration = document.getElementById("duration")
     var token = '{{csrf_token}}';
     $.ajax({
         type:"GET",

@@ -13,3 +13,9 @@ class ParkingCards(models.Model):
 class Slots(models.Model):
     slot_number : models.TextField()
     color : models.TextField()
+
+class Places(models.Model):
+    value : models.TextField()
+    name : models.TextField()
+    longitude : models.TextField()
+    latitude : models.TextField()

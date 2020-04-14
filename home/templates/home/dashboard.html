@@ -15,18 +15,21 @@
             <div class="book-slots">
                 <div class="card-body-slots">
                     <div style="text-align: center;">
+                        
                         <div style="display: inline;">
                             <input type="text" class="datepicker" onchange="changed()" placeholder="Date" name="Date" id="date_input">
                         </div>
                         <div style="display:inline-block;">
                             <input type="text" class="timepicker" onchange="changed()" placeholder="Time" name="Time" id="time_input">
+                        </div><br>
+                        <h4 style="display: inline;">Duration : </h4>
+                        <div style="display: inline;">
+                            <input type="text" onchange="changed()" placeholder="Hrs" name="DurationHrs" id="duration_hrs_input">
+                        </div>
+                        <div style="display: inline;">
+                            <input type="text" onchange="changed()" placeholder="Mins" name="DurationMins" id="duration_mins_input">
                         </div><br><br>
-                        <div style="display: inline;">
-                            <button id="checkslots_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Check for free slots</button>
-                        </div>
-                        <div style="display: inline;">
-                            <button type="submit" id="book_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Book slot</button>
-                        </div>
+                
                         <div>
                             <h4 style="display: inline;">Select place : </h4>
                             <select style="display:inline-block;" class="select_places" id="select_places" onchange="updateMap()" name="place">
@@ -36,6 +39,10 @@
                                 {% endfor %}
                             </select> 
                         </div>
+
+                        <button onclick="toggleSlotInfo()">slot status</button>
+
+
                         <div id="slotresult"></div>
                         <br>
                         <div id="update-slot-cards">
@@ -53,7 +60,18 @@
                             });
                             map.addControl(new mapboxgl.NavigationControl());
                             map.scrollZoom.disable();
-                        </script>
+                        </script><br><br>
+
+                        <div style="display: inline;">
+                            <button id="checkslots_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Check for free slots</button>
+                        </div>
+                        <div style="display: inline;">
+                            <button type="submit" id="book_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Book slot</button>
+                        </div>
+
+
+
+
                     </div>
                 </div>
             </div><br>
@@ -108,6 +126,7 @@
                             zoom: 16
                         });
                         map.addControl(new mapboxgl.NavigationControl());
+                        new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
     }
     </script>
     

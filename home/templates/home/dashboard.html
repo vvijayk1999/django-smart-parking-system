@@ -1,6 +1,7 @@
 {% extends "home/base.html" %}
 {% block navbarlist %}
     <li><a class="active" href="#">Home</a></li>
+    <li><a href="/reserve">Book a slot</a></li>
     <li><a href="#balance">My Balance</a></li>
     <li><a href="#">Add E-Cash</a></li>
     <li><a href="/logout">Logout</a></li>
@@ -8,90 +9,58 @@
 {% endblock navbarlist %}
 {% block content %}
 
-    <div id="book_a_slot">
-        <h3 style="color: #FFF;">Hello there, {{ user.username }}</h3><br><br>
-        <center>
-            <h2 style="color: #FFF;">Book Parking Slots :</h2></center>
-            <div class="book-slots">
-                <div class="card-body-slots">
-                    <div style="text-align: center;">
-                        
-                        <div style="display: inline;">
-                            <input type="text" class="datepicker" onchange="changed()" placeholder="Date" name="Date" id="date_input">
-                        </div>
-                        <div style="display:inline-block;">
-                            <input type="text" class="timepicker" onchange="changed()" placeholder="Time" name="Time" id="time_input">
-                        </div><br>
-                        <h4 style="display: inline;">Duration : </h4>
-                        <div style="display: inline;">
-                            <input type="text" onchange="changed()" placeholder="Hrs" name="DurationHrs" id="duration_hrs_input">
-                        </div>
-                        <div style="display: inline;">
-                            <input type="text" onchange="changed()" placeholder="Mins" name="DurationMins" id="duration_mins_input">
-                        </div><br><br>
-                
-                        <div>
-                            <h4 style="display: inline;">Select place : </h4>
-                            <select style="display:inline-block;" class="select_places" id="select_places" onchange="updateMap()" name="place">
-                                <option disabled selected value> -- select an option -- </option>
-                                {%for place in places %}
-                                <option value="{{place.value}}">{{place.name}}</option>
-                                {% endfor %}
-                            </select> 
-                        </div>
-
-                        <button onclick="toggleSlotInfo()">slot status</button>
-
-
-                        <div id="slotresult"></div>
-                        <br>
-                        <div id="update-slot-cards">
-                            
-                        </div>
-                        <br>
-                        <div id='map' style='width:auto; height: 300px; align-self:stretch'></div>
-                        <script>
-                            mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtcGF0aHNhbSIsImEiOiJjanNybDU2ZHAwN3d2NDNwNGUzdzRqNXZ5In0.D4gRrSnSPep_O9Txw55fkQ';
-                            var map = new mapboxgl.Map({
-                                container: 'map',
-                                style: 'mapbox://styles/mapbox/streets-v11',
-                                center: [77.59, 13.0], // starting position
-                                zoom: 10
-                            });
-                            map.addControl(new mapboxgl.NavigationControl());
-                            map.scrollZoom.disable();
-                        </script><br><br>
-
-                        <div style="display: inline;">
-                            <button id="checkslots_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Check for free slots</button>
-                        </div>
-                        <div style="display: inline;">
-                            <button type="submit" id="book_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Book slot</button>
-                        </div>
-
-
-
-
-                    </div>
-                </div>
+<div id="book_a_slot">
+    <h3 style="color: #FFF;">Hello there, {{ user.username }}</h3><br><br>
+    <center>
+        <h2 style="color: #FFF;">Realtime Slot Updates :</h2>
+    </center><br>
+    <div class="book-slots">
+        <div class="card-body-slots">
+            <div>
+                <h4 style="display: inline;">Select place : </h4><br><br>
+                <select style="display:inline-block;" class="select_places" id="select_places" onchange="updateSlotCardsOnce()" name="place">
+                    <option disabled selected value> -- select an option -- </option>
+                    {%for place in places %}
+                    <option value="{{place.value}}">{{place.name}}</option>
+                    {% endfor %}
+                </select> 
             </div><br>
-            </div>
+            <div id="update-slot-cards"style="display: block;"></div>
+        
+        </div>
+        
+    </div>
+
+    
     <div id="parking_history">
         <center><h2 style="color: #FFF;">Your Parking History :</h2></center>
     <!-- Parking Card Dynamic-->
-    {%for parkingCard in parkingCards %}
-    <div class="card card-4">
-        <div class="card-body-slots">
-            <div>
-                <label class="label"><h3>{{parkingCard.place}}</h3></label>
-                <label class="label">Arrival Time : {{parkingCard.arrival_time}}</label>
-                <label class="label">Departure Time : {{parkingCard.departure_time}}</label>
-                <label class="label">Date : {{parkingCard.date}}</label>
-                <label class="label">Price : {{parkingCard.price}}</label>
+    {% if parkingCards is defined %}
+
+        {%for parkingCard in parkingCards %}
+        <div class="card card-4">
+            <div class="card-body-slots">
+                <div>
+                    <label class="label"><h3>{{parkingCard.place}}</h3></label>
+                    <label class="label">Arrival Time : {{parkingCard.arrival_time}}</label>
+                    <label class="label">Departure Time : {{parkingCard.departure_time}}</label>
+                    <label class="label">Date : {{parkingCard.date}}</label>
+                    <label class="label">Price : {{parkingCard.price}}</label>
+                </div>
             </div>
-        </div>
-    </div><br>
-    {% endfor %}
+        </div><br>
+        {% endfor %}  
+
+    {% else %}
+        <div class="card card-4">
+            <div class="card-body-slots">
+                <div>
+                    <label class="label"><h3>Empty</h3></label>
+                </div>
+            </div>
+        </div><br>
+    {% endif %}
+    
     <!-- end  -->
     </div>
     <div id="balance">
@@ -99,35 +68,60 @@
     <div class="card card-4">
         <div class="card-body-slots">
             <div>
-
-
                 <label class="label"><h3>Available Rs : {{balanceCard.current}}</h3></label>
                 <label class="label">Due Rs : {{balanceCard.due}}</label>
-
             </div>
         </div>
     </div><br>
     </div>
-
     <script>
-    function updateMap(){
-        var place = document.getElementById("select_places");
-        var pos;
-        switch(place.value)
-        {
-            {%for place in places %}
-                case "{{place.value}}" : pos = [{{place.longitude}}, {{place.latitude}}];break;
-            {% endfor %}
-        }
-        var map = new mapboxgl.Map({
-                            container: 'map',
-                            style: 'mapbox://styles/mapbox/streets-v11',
-                            center: pos, // starting position
-                            zoom: 16
-                        });
-                        map.addControl(new mapboxgl.NavigationControl());
-                        new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
-    }
-    </script>
     
+
+    var token = '{{csrf_token}}';
+
+    function updateSlotCardsOnce(){
+        var _place = document.getElementById("select_places").value;
+        $.ajax({
+          type:"GET",
+          headers: { "X-CSRFToken": token },
+          url: 'http://'+window.location.hostname+':'+location.port+'/realtime-slot-info',
+          data: {
+            place : _place
+          },
+          success: function (response) {
+            document.getElementById('update-slot-cards').innerHTML = response;
+          },
+          error: function(request, error){
+            document.getElementById('update-slot-cards').innerHTML = '<div class="slots-info"><h4>Error updating the slot information, Please check your Internet connection.</h4></div>';
+          }
+        });
+      }
+      
+      function updateSlotCards(){
+        var _place = document.getElementById("select_places").value;
+        $.ajax({
+          type:"GET",
+          headers: { "X-CSRFToken": token },
+          url: 'http://'+window.location.hostname+':'+location.port+'/realtime-slot-info',
+          data: {
+            place : _place
+          },
+          success: function (response) {
+            document.getElementById('update-slot-cards').innerHTML = response;
+          },
+          complete: function(data){
+            setTimeout(updateSlotCards,5000);
+           },
+          error: function(request, error){
+            document.getElementById('update-slot-cards').innerHTML = '<div class="slots-info"><h4>Error updating the slot information, Please check your Internet connection.</h4></div>';
+          }
+        });
+      }
+      
+      $(document).ready(function(){
+        setTimeout(updateSlotCards,5000);
+       });
+
+
+    </script>    
 {% endblock content %}

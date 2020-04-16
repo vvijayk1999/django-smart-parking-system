@@ -1,0 +1,93 @@
+{% extends "home/base.html" %}
+{% block navbarlist %}
+    <li><a href="/">Home</a>
+    <li><a class="active" href="/reserve">Book a slot</a></li>
+    <li><a href="/#balance">My Balance</a></li>
+    <li><a href="#">Add E-Cash</a></li>
+    <li><a href="/logout">Logout</a></li>
+    <li><a href="/about">About</a></li>
+{% endblock navbarlist %}
+{% block content %}
+{% load static %}
+<div id="book_a_slot">
+    <h3 style="color: #FFF;">Hello there, {{ user.username }}</h3><br><br>
+    <center>
+        <h2 style="color: #FFF;">Book Parking Slots :</h2>
+    </center><br>
+    <div class="book-slots">
+        <div class="card-body-slots">
+            <div style="text-align: center;">
+                <div style="display: inline;">
+                    <input type="text" class="datepicker" onchange="changed()" placeholder="Date" name="Date" id="date_input">
+                </div>
+                <div style="display:inline-block;">
+                    <input type="text" class="timepicker" onchange="changed()" placeholder="Time" name="Time" id="time_input">
+                </div><br>
+                <h4 style="display: inline;">Duration : </h4>
+                <div style="display: inline;">
+                    <input type="text" onchange="changed()" placeholder="Hrs" name="DurationHrs" id="duration_hrs_input">
+                </div>
+                <div style="display: inline;">
+                    <input type="text" onchange="changed()" placeholder="Mins" name="DurationMins" id="duration_mins_input">
+                </div><br><br>
+                <div>
+                    <h4 style="display: inline;">Select place : </h4>
+                    <select style="display:inline-block;" class="select_places" id="select_places" onchange="updateMap()" name="place">
+                        <option disabled selected value> -- select an option -- </option>
+                        {%for place in places %}
+                        <option value="{{place.value}}">{{place.name}}</option>
+                        {% endfor %}
+                    </select> 
+                </div>
+                <button onclick="toggleSlotInfo()">View availabe slots</button>    
+                <div id="slotresult" ></div>
+                <div id="update-slot-cards"style="display: none;">
+                </div>
+                <br>
+                <button onclick="toggleMap()">Map</button>    
+                <div id='map' style='width:auto; height: 300px; align-self:stretch; display:none;'></div>
+                <script>
+                    mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtcGF0aHNhbSIsImEiOiJjanNybDU2ZHAwN3d2NDNwNGUzdzRqNXZ5In0.D4gRrSnSPep_O9Txw55fkQ';
+                    var map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v11',
+                        center: [77.59, 13.0], // starting position
+                        zoom: 10
+                    });
+                    map.addControl(new mapboxgl.NavigationControl());
+                    map.scrollZoom.disable();
+                </script><br><br>
+                <div style="display: inline;">
+                    <button id="checkslots_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Check for free slots</button>
+                </div>
+                <div style="display: inline;">
+                    <button type="submit" id="book_btn" class="btn btn--radius-2 btn--blue" style="padding-left: 5px; padding-right: 5px;">Book slot</button>
+                </div>
+                <script src="{% static 'js/logic.js' %}"></script><br><br>
+                
+            </div>
+        </div>
+    </div><br>
+</div>
+<script>
+    function updateMap(){
+        var place = document.getElementById("select_places");
+        var pos;
+        updateSlotCardsOnce();
+        switch(place.value)
+        {
+            {%for place in places %}
+                case "{{place.value}}" : pos = [{{place.longitude}}, {{place.latitude}}];break;
+            {% endfor %}
+        }
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: pos, // starting position
+            zoom: 16
+        });
+        map.addControl(new mapboxgl.NavigationControl());
+        
+    }
+</script>
+{% endblock content %}

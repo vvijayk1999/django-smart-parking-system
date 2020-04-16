@@ -5,7 +5,41 @@ update_slot_cards = document.getElementById('update-slot-cards');
 slotCards = document.getElementsByClassName('slots-info');
 var token = '{{csrf_token}}';
 
-toggleSlot
+function toggleSlotInfo() {
+  var x = document.getElementById("update-slot-cards");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    updateSlotCardsOnce();
+  } else {
+    x.style.display = "none";
+  }
+}
+function toggleMap() {
+  var x = document.getElementById("map");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+function updateSlotCardsOnce(){
+  var _place = document.getElementById("select_places").value;
+  $.ajax({
+    type:"GET",
+    headers: { "X-CSRFToken": token },
+    url: 'http://'+window.location.hostname+':'+location.port+'/slot-info',
+    data: {
+      place : _place
+    },
+    success: function (response) {
+      document.getElementById('update-slot-cards').innerHTML = response;
+    },
+    error: function(request, error){
+      document.getElementById('update-slot-cards').innerHTML = '<div class="slots-info"><h4>Error updating the slot information, Please check your Internet connection.</h4></div>';
+    }
+  });
+}
 
 function updateSlotCards(){
   var _place = document.getElementById("select_places").value;

@@ -802,6 +802,17 @@ section{
 
 .slot{
   padding: 10px 10px;
+  padding-top: 4%;
+  padding-bottom: 4%;
+  width: fit-content;
+  height: fit-content;
+  display: inline-block;
+  margin: 6px;
+  border-radius: 5%;
+}
+
+.realtime-slot{
+  padding: 10px 10px;
   padding-top: 8%;
   padding-bottom: 8%;
   width: fit-content;

@@ -65,6 +65,18 @@ def dashboard(request):
 
 def about(request):
     return render(request,'home/about.html',{'title': 'About'})
+    
+@login_required
+def reserve(request):
+    _ = Places()
+    _.latitude = "12.991734"
+    _.longitude = "77.571458"
+    _.value = 'mantri-mall'
+    _.name = 'Mantri Mall'
+
+    #places = ['Mantri Mall','REVA University','Fun World','Manyata Tech Park']
+    places = [_]
+    return render(request,'home/reserve.html',{'title':'Book a slot','places':places})
 
 def slotInfo(request):
     
@@ -72,6 +84,40 @@ def slotInfo(request):
 
     body = ''
     c.execute("SELECT * FROM Slots WHERE place='"+place+"'")
+    result=c.fetchall()
+    for row in result:
+        bg_color = '#0F0'       #
+        text_color = '#000'     #   Defaults
+        message = 'Available'   #
+        border = ''
+
+        if row[1] == "0":   #   Available
+            bg_color = '#FFF'#  White
+            text_color = '#000'#Black 
+            message = 'Available'
+            border = 'border-style: solid;'   
+        if row[1] == "2":   #   Reserved
+            bg_color = "#ffa500"#Orange
+            text_color = "#000"#Black
+            message = "Reserved"
+
+        number = row[0]
+        div = '<div class="slot" style="background-color: '+bg_color+'; '+border+' "><h2 style="color: '+text_color+';">'+str(number)+'</h2><br><h5 style="color:'+text_color+';">'+message+'</h5></div>'
+        body+=div
+
+    if place == '':
+        body = '<h4>Please select a place.</h4>'    
+
+    html = '<div class="slots-info">'+body+'</div>'
+
+    return HttpResponse(html)
+
+def realtimeSlotInfo(request):
+
+    place = request.GET['place']
+
+    body = ''
+    c.execute("SELECT * FROM RealtimeSlots WHERE place='"+place+"'")
     result=c.fetchall()
     for row in result:
         bg_color = '#0F0'       #
@@ -92,8 +138,11 @@ def slotInfo(request):
             message = "Reserved"
 
         number = row[0]
-        div = '<div class="slot" style="background-color: '+bg_color+'; "><h2 style="color: '+text_color+';">'+str(number)+'</h2><br><h5 style="color:'+text_color+';">'+message+'</h5></div>'
+        div = '<div class="realtime-slot" style="background-color: '+bg_color+'; "><h2 style="color: '+text_color+';">'+str(number)+'</h2><br><h5 style="color:'+text_color+';">'+message+'</h5></div>'
         body+=div
+
+    if place == '':
+        body = '<h4>Please select a place.</h4>'    
 
     html = '<div class="slots-info">'+body+'</div>'
 

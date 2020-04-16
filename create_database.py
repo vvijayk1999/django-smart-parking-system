@@ -24,6 +24,15 @@ def createSlotsTable():
     except:
         print("Table Slots is already created")
 
+def createRealtimeSlotsTable():
+    try:
+        c.execute('''CREATE TABLE RealtimeSlots
+        (slot_num text,status text,place text)''')
+        print ("table RealtimeSlots created")
+        conn.commit()
+    except:
+        print("Table RealtimeSlots is already created")
+
 def addHistoryRecord(v_id,place,arrival_time,departure_time,date,amount):
     c.execute("INSERT INTO History VALUES('"+v_id+"','"+place+"','"+arrival_time+"','"+departure_time+"','"+date+"','"+amount+"')")
     conn.commit()
@@ -36,13 +45,29 @@ def deleteAllSlotRecord():
     c.execute("DELETE FROM Slots")
     conn.commit()
 
+def addRealtimeSlotsRecord(slot_num,status,place):
+    c.execute("INSERT INTO RealtimeSlots VALUES('"+slot_num+"','"+status+"','"+place+"')")
+    conn.commit()
+
+def deleteAllRealtimeRecords():
+    c.execute('DELETE FROM RealtimeSlots')
+    conn.commit()
+
 if __name__ == "__main__":
     #createHistoryTable()
     #createSlotsTable()
 
     #addHistoryRecord('ka04781ff','taj hotel','20:00','21:00','14 Mar 2020','200')
-    deleteAllSlotRecord()
-    print('Records added')
+    #deleteAllSlotRecord()
+    #print('Records added')
+
+    createRealtimeSlotsTable()
+    addRealtimeSlotsRecord('1','0','mantri-mall')
+    addRealtimeSlotsRecord('2','1','mantri-mall')
+    addRealtimeSlotsRecord('3','0','mantri-mall')
+    addRealtimeSlotsRecord('4','2','mantri-mall')
+
+    # deleteAllRealtimeRecords()
 
     #deleteHistoryRecord('KA41EN1051')
-    print('Records deleted')
+    #print('Records deleted')

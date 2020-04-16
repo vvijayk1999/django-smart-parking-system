@@ -72,11 +72,14 @@ book_btn.style.background = '#999999';
 checkslots_btn.disabled = false;
 checkslots_btn.style.background = '#4272d7';
 
+
 checkslots_btn.addEventListener("click",function(){
     const _date = document.getElementById("date_input").value;
     const _time = document.getElementById("time_input").value;
     const _place = document.getElementById("select_places").value;
-    const _duration = document.getElementById("duration")
+    const _duration_hrs = document.getElementById("duration_hrs_input").value;
+    const _duration_mins = document.getElementById("duration_mins_input").value;
+    const _duration = _duration_hrs + ':' + _duration_mins;
     var token = '{{csrf_token}}';
     $.ajax({
         type:"GET",
@@ -85,23 +88,25 @@ checkslots_btn.addEventListener("click",function(){
         data: {
             date : _date,
             time : _time,
-            place : _place
+            place : _place,
+            duration : _duration
         },
         success: function (response) {
-          if(response == 'True'){
+          if(response == 'False'){
 
+            book_btn.disabled = true;
+            book_btn.style.background = '#999999';
+
+            checkslots_btn.disabled = false;
+            checkslots_btn.style.background = '#4272d7'; 
+            
+          }
+          else{
             book_btn.disabled = false;
             book_btn.style.background = '#4272d7';
 
             checkslots_btn.disabled = true;
             checkslots_btn.style.background = '#999999';
-          }
-          else{
-            book_btn.disabled = true;
-            book_btn.style.background = '#999999';
-
-            checkslots_btn.disabled = false;
-            checkslots_btn.style.background = '#4272d7';  
           }
             
           renderHTML(response);
@@ -110,7 +115,42 @@ checkslots_btn.addEventListener("click",function(){
 });
 
 function renderHTML(data){
-    slotsContainer.insertAdjacentHTML('beforeend','<h4>'+data+' </h4>');
+  if(data == 'False'){
+
+  }else{
+    if(confirm(data))
+      placeBooking();
+  }
+}
+
+function placeBooking(){
+  const _date = document.getElementById("date_input").value;
+    const _time = document.getElementById("time_input").value;
+    const _place = document.getElementById("select_places").value;
+    const _duration_hrs = document.getElementById("duration_hrs_input").value;
+    const _duration_mins = document.getElementById("duration_mins_input").value;
+    const _duration = _duration_hrs + ':' + _duration_mins;
+    const _email = document.getElementById('email').value;
+    const _v_id = document.getElementById('v_id').value;
+
+    var token = '{{csrf_token}}';
+    $.ajax({
+        type:"GET",
+        headers: { "X-CSRFToken": token },
+        url: 'http://'+window.location.hostname+':'+location.port+'/request/book',
+        data: {
+            date : _date,
+            time : _time,
+            place : _place,
+            duration : _duration,
+            email : _email,
+            v_id : _v_id
+        },
+        success: function (response) {
+          if(response == "True")
+            alert("Successfully booked !")
+        }
+      });
 }
 
 function changed(){

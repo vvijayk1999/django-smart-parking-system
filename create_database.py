@@ -33,6 +33,14 @@ def createRealtimeSlotsTable():
     except:
         print("Table RealtimeSlots is already created")
 
+def createOnline_slotsTable():
+    try:
+        c.execute('''CREATE TABLE Online_slots
+         (slot_num int,status text,place text,current_date text,PRIMARY KEY(slot_num,place))''')
+        conn.commit()
+    except:
+        print("Table RealtimeSlots is already created")
+
 def addHistoryRecord(v_id,place,arrival_time,departure_time,date,amount):
     c.execute("INSERT INTO History VALUES('"+v_id+"','"+place+"','"+arrival_time+"','"+departure_time+"','"+date+"','"+amount+"')")
     conn.commit()
@@ -49,6 +57,10 @@ def addRealtimeSlotsRecord(slot_num,status,place):
     c.execute("INSERT INTO RealtimeSlots VALUES('"+slot_num+"','"+status+"','"+place+"')")
     conn.commit()
 
+def addOnline_slots(slot_num,status,place,current_date):
+    c.execute("INSERT INTO Online_slots VALUES('"+slot_num+"','"+status+"','"+place+"','"+current_date+"')")
+    conn.commit()
+
 def deleteAllRealtimeRecords():
     c.execute('DELETE FROM RealtimeSlots')
     conn.commit()
@@ -61,11 +73,20 @@ if __name__ == "__main__":
     #deleteAllSlotRecord()
     #print('Records added')
 
-    createRealtimeSlotsTable()
-    addRealtimeSlotsRecord('1','0','mantri-mall')
-    addRealtimeSlotsRecord('2','1','mantri-mall')
-    addRealtimeSlotsRecord('3','0','mantri-mall')
-    addRealtimeSlotsRecord('4','2','mantri-mall')
+    # createRealtimeSlotsTable()
+    # addRealtimeSlotsRecord('1','0','mantri-mall')
+    # addRealtimeSlotsRecord('2','1','mantri-mall')
+    # addRealtimeSlotsRecord('3','0','mantri-mall')
+    # addRealtimeSlotsRecord('4','2','mantri-mall')
+
+    addOnline_slots('1','0','mantri-mall','sdlkfsd')
+    addOnline_slots('2','2','mantri-mall','sdlkfsd')
+    addOnline_slots('3','0','mantri-mall','sdlkfsd')
+    # createOnline_slotsTable()
+
+    #c.execute("DELETE FROM Online_slots")
+    # c.execute("DROP TABLE Online_slots")
+    # conn.commit()
 
     # deleteAllRealtimeRecords()
 

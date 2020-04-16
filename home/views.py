@@ -83,7 +83,7 @@ def slotInfo(request):
     place = request.GET['place']
 
     body = ''
-    c.execute("SELECT * FROM Slots WHERE place='"+place+"'")
+    c.execute("SELECT * FROM Online_slots WHERE place='"+place+"'")
     result=c.fetchall()
     for row in result:
         bg_color = '#0F0'       #

@@ -10,7 +10,9 @@
 {% block content %}
 {% load static %}
 <div id="book_a_slot">
-    <h3 style="color: #FFF;">Hello there, {{ user.username }}</h3><br><br>
+    <h3 style="color: #FFF;">Hello there, {{ user.username }}</h3><br>
+    <h5 id="email" style="color: #FFF;">E-mail : {{ user.email }}</h5>
+    <h5 id="v_id"style="color: #FFF;">Vehicle Number : {{ user.v_id }}</h5><br>
     <center>
         <h2 style="color: #FFF;">Book Parking Slots :</h2>
     </center><br>
@@ -39,6 +41,7 @@
                         {% endfor %}
                     </select> 
                 </div>
+                <div id="slotresult"></div>
                 <button onclick="toggleSlotInfo()">View availabe slots</button>    
                 <div id="slotresult" ></div>
                 <div id="update-slot-cards"style="display: none;">

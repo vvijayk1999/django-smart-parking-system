@@ -25,12 +25,14 @@ function toggleMap() {
 
 function updateSlotCardsOnce(){
   var _place = document.getElementById("select_places").value;
+  var _date = document.getElementById("date_input").value;
   $.ajax({
     type:"GET",
     headers: { "X-CSRFToken": token },
     url: 'http://'+window.location.hostname+':'+location.port+'/slot-info',
     data: {
-      place : _place
+      place : _place,
+      date : _date
     },
     success: function (response) {
       document.getElementById('update-slot-cards').innerHTML = response;
@@ -43,12 +45,14 @@ function updateSlotCardsOnce(){
 
 function updateSlotCards(){
   var _place = document.getElementById("select_places").value;
+  var _date = document.getElementById("date_input").value;
   $.ajax({
     type:"GET",
     headers: { "X-CSRFToken": token },
     url: 'http://'+window.location.hostname+':'+location.port+'/slot-info',
     data: {
-      place : _place
+      place : _place,
+      date : _date
     },
     success: function (response) {
       document.getElementById('update-slot-cards').innerHTML = response;
@@ -130,8 +134,8 @@ function placeBooking(){
     const _duration_hrs = document.getElementById("duration_hrs_input").value;
     const _duration_mins = document.getElementById("duration_mins_input").value;
     const _duration = _duration_hrs + ':' + _duration_mins;
-    const _email = document.getElementById('email').value;
-    const _v_id = document.getElementById('v_id').value;
+    const _email = document.getElementById('email').innerHTML;
+    const _v_id = document.getElementById('v_id').innerHTML;
 
     var token = '{{csrf_token}}';
     $.ajax({
@@ -156,4 +160,5 @@ function placeBooking(){
 function changed(){
   checkslots_btn.disabled = false;
   checkslots_btn.style.background = '#4272d7';  
+
 }

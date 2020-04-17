@@ -78,13 +78,24 @@ def reserve(request):
     places = [_]
     return render(request,'home/reserve.html',{'title':'Book a slot','places':places})
 
-def slotInfo(request):
-    
-    place = request.GET['place']
+month = date.today().strftime("%b")
+year = date.today().strftime("%Y")
+date = date.today().strftime("%d")
 
+current_date = month + ' ' + date + ', '+year
+
+def slotInfo(request):
+        
+    place = request.GET['place']
+    date = request.GET['date']
+
+#Apr 17, 2020
     body = ''
-    c.execute("SELECT * FROM Online_slots WHERE place='"+place+"'")
+    c.execute("SELECT * FROM Online_slots WHERE place ='%s'" %(place))
+    #c.execute("SELECT * FROM Online_slots ")
     result=c.fetchall()
+    print(result)
+
     for row in result:
         bg_color = '#0F0'       #
         text_color = '#000'     #   Defaults

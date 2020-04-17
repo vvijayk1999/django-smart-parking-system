@@ -79,16 +79,43 @@ if __name__ == "__main__":
     # addRealtimeSlotsRecord('3','0','mantri-mall')
     # addRealtimeSlotsRecord('4','2','mantri-mall')
 
-    addOnline_slots('1','0','mantri-mall','sdlkfsd')
-    addOnline_slots('2','2','mantri-mall','sdlkfsd')
-    addOnline_slots('3','0','mantri-mall','sdlkfsd')
+    # addOnline_slots('1','0','mantri-mall','Apr 17, 2020')
+    # addOnline_slots('2','2','mantri-mall','Apr 17, 2020')
+    # addOnline_slots('3','0','mantri-mall','Apr 17, 2020')
+
+
     # createOnline_slotsTable()
 
-    #c.execute("DELETE FROM Online_slots")
+    # c.execute('''CREATE TABLE Booking
+    #         (v_id text PRIMARY KEY,b_time text,duration text,s_no int,place text,b_date text)''')
+    # conn.commit()
+
+    # s_no = 1
+    # place = 'mantri-mall'
+    # v_id = 'ka3243324'
+    # b_date = '2020:10:10'
+    # duration = '02:13'
+    # b_time = '4:00'
+
+    # c.execute("INSERT INTO Booking VALUES('%s','%s','%s','%d','%s','%s')" % (v_id,b_time,duration,s_no,place,b_date))
+    # conn.commit()
+
+    place = 'mantri-mall'
+    date = 'Apr 16, 2020'
+    c.execute("SELECT * FROM Online_slots WHERE current_date='"+date+"'") 
+    result=c.fetchall()
+    print(result)
+
+    # c.execute("DELETE FROM Booking")
     # c.execute("DROP TABLE Online_slots")
     # conn.commit()
 
     # deleteAllRealtimeRecords()
+
+    # c.execute('''CREATE TABLE Online_slots
+    #      (slot_num int,status text,place text,current_date text,PRIMARY KEY(slot_num,place))''')
+    # print ("table Booking created")
+    # conn.commit()
 
     #deleteHistoryRecord('KA41EN1051')
     #print('Records deleted')

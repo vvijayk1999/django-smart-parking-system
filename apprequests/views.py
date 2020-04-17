@@ -48,13 +48,26 @@ def convertDate(date):  #Apr 07, 2021
     month = date.split(' ')[0]
     day = date.split(' ')[1].split(', ')[0]
 
-s_no = ''
-current_date = date.today()
+s_no = -1
+month = date.today().strftime("%b")
+year = date.today().strftime("%Y")
+date = date.today().strftime("%d")
+
+current_date = month + ' ' + date + ', '+year
+
+#current_date.strftime("%b"," ","%d",",", "%Y")  #Apr 17, 2020
 
 def DBrequest(b_time,duration,place,b_date):
     global s_no
     if(b_date!=current_date):
-        s_no= c.execute("SELECT slot_num FROM Online_slots WHERE status = '0' AND current_date ='"+b_date+"' AND place = '"+place+"' ORDER BY RANDOM() LIMIT 1")
+        print('######### current : '+current_date)
+        print('######### current : '+b_date)
+        result = c.execute("SELECT slot_num FROM Online_slots WHERE status = '0' AND current_date ='"+b_date+"' AND place = '"+place+"' ")
+        result=c.fetchall()
+        for row in result:
+            s_no = row[0]
+            print(s_no)
+ 
     else:
         s_no=random.randrange(1,5,1) 
     FMT = '%H:%M'
@@ -68,7 +81,8 @@ def DBrequest(b_time,duration,place,b_date):
         amount=str(int(30)+(x-1)*int(10))
     print(amount)
 
-    if s_no == '':
+    if s_no == -1:
+        print('########################   false #########################')
         return False
     else:
         return 'Parking space is available at '+place+' on '+b_date+' , '+b_time+' and you will be charged Rs.'+amount+'\nWould you like to proceed ?'
@@ -78,8 +92,8 @@ def DBrequest(b_time,duration,place,b_date):
 def proceedToBooking(v_id,b_time,duration,place,b_date,email):
 
     global s_no
-
-    c.execute("INSERT INTO Booking VALUES('"+v_id+"','"+b_time+"','"+duration+"','"+s_no+"','"+place+"','"+b_date+"')")
+    
+    c.execute("INSERT INTO Booking VALUES('%s','%s','%s','%d','%s','%s')" % (v_id,b_time,duration,s_no,place,b_date))
     print("row inserted")
 
 
@@ -87,7 +101,9 @@ def proceedToBooking(v_id,b_time,duration,place,b_date,email):
 
     message_string = 'Hello there,\nYour pre-booking reservation was successfull!\n\nInfo:\nVehicle number:'+v_id
 
-    topic = email[0].split('@')[0]+'%'+email[0].split('@')[1]
+    print('######### email-->'+email)
+
+    topic = email.split('@')[0]+'%'+email.split('@')[1]
     print(topic)
     message_title = "Smart Parking System"
     result = push_service.notify_topic_subscribers(topic_name=topic, message_body=message_string,message_title=message_title)
@@ -97,9 +113,9 @@ def proceedToBooking(v_id,b_time,duration,place,b_date,email):
     status=2
     c.execute("SELECT * FROM Online_slots WHERE slot_num= '%s' AND place = '%s'" %(s_no,place))
     if c.fetchall():
-        c.execute("UPDATE Online_slots SET status = '2' WHERE slot_num = '+s_no+' and place='+place+' and current_date = '+date' ")
+        c.execute("UPDATE Online_slots SET status = '2' WHERE slot_num = '%d' and place='%s' and current_date = '%s' "%(s_no,place,b_date))
     else:
-        c.execute("INSERT INTO Online_slots VALUES('"+s_no+"','"+status+"','"+place+"','"+current_date+"')")
+        c.execute("INSERT INTO Online_slots VALUES('%d','%s','%s','%s')" % (s_no,status,place,b_date))
         print("row inserted")
 
 # Create your views here.
@@ -114,8 +130,8 @@ def bookSlots(request):
         duration = request.GET['duration']
         place = request.GET['place']
 
-        email = request.GET['email']
-        v_id = request.GET['v_id']
+        email = request.GET['email'].split('E-mail : ')[1]
+        v_id = request.GET['v_id'].split('Vehicle Number : ')[1]
 
         proceedToBooking(v_id,time,duration,place,date,email)
         return HttpResponse('True')

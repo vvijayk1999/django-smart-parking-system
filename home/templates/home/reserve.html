@@ -15,6 +15,8 @@
     <h5 id="v_id"style="color: #FFF;">Vehicle Number : {{ user.v_id }}</h5><br>
     <center>
         <h2 style="color: #FFF;">Book Parking Slots :</h2>
+        <div id="update-slot-cards">
+        </div>
     </center><br>
     <div class="book-slots">
         <div class="card-body-slots">
@@ -40,11 +42,6 @@
                         <option value="{{place.value}}">{{place.name}}</option>
                         {% endfor %}
                     </select> 
-                </div>
-                <div id="slotresult"></div>
-                <button onclick="toggleSlotInfo()">View availabe slots</button>    
-                <div id="slotresult" ></div>
-                <div id="update-slot-cards"style="display: none;">
                 </div>
                 <br>
                 <button onclick="toggleMap()">Map</button>    

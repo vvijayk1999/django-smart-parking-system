@@ -100,11 +100,15 @@ if __name__ == "__main__":
     # c.execute("INSERT INTO Booking VALUES('%s','%s','%s','%d','%s','%s')" % (v_id,b_time,duration,s_no,place,b_date))
     # conn.commit()
 
-    place = 'mantri-mall'
-    date = 'Apr 16, 2020'
-    c.execute("SELECT * FROM Online_slots WHERE current_date='"+date+"'") 
-    result=c.fetchall()
-    print(result)
+    # place = 'mantri-mall'
+    # date = 'Apr 16, 2020'
+    # c.execute("SELECT * FROM Online_slots WHERE current_date='"+date+"'") 
+    # result=c.fetchall()
+    # print(result)
+
+    c.execute("INSERT INTO users_vid VALUES('KL54A2670','vvijayk1999@gmail.com')")
+    conn.commit()
+
 
     # c.execute("DELETE FROM Booking")
     # c.execute("DROP TABLE Online_slots")

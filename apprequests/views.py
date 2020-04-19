@@ -79,6 +79,8 @@ def DBrequest(b_time,duration,place,b_date):
         amount = str(30)
     elif x>=2:
         amount=str(int(30)+(x-1)*int(10))
+    else : 
+        amount = '0'
     print(amount)
 
     if s_no == -1:

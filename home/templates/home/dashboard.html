@@ -40,7 +40,7 @@
     <div id="parking_history">
         <center><h2 style="color: #FFF;">Your Parking History :</h2></center>
     <!-- Parking Card Dynamic-->
-    {% if parkingCards is defined %}
+    
 
         {%for parkingCard in parkingCards %}
         <div class="card card-4">
@@ -56,15 +56,7 @@
         </div><br>
         {% endfor %}  
 
-    {% else %}
-        <div class="card card-4">
-            <div class="card-body-slots">
-                <div>
-                    <label class="label"><h3>Empty</h3></label>
-                </div>
-            </div>
-        </div><br>
-    {% endif %}
+    
     
     <!-- end  -->
     </div>

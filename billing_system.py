@@ -9,7 +9,7 @@ import time
 
 push_service = FCMNotification(api_key="AAAAj7P1O5g:APA91bHUCdu3Pf3pdewj2co-rQO9yFwkWjTm2FKbvHNrMZwrWw6KZ2OUDy_sdilVTXTdBg7KqWh6EH3rt6P34CXNpYrdgSC3eJMPjY-iwx_a5rXXmPCCCUITurpYLpl-Kfe2rz2oNHBn")
 
-broker_address= "35.225.7.175"
+broker_address= "35.225.183.19"
 port = 1883 #portNumber
 #user = "<username>"
 #password = "<password>"
@@ -32,7 +32,7 @@ def connect():
     c = conn.cursor()
     
 def Values(message):
-    print(message)
+    
     parsed_json = (json.loads(message))
     Topic=(parsed_json['topic'])
     if(Topic=="slot_details"):
@@ -48,11 +48,15 @@ def Values(message):
 
         duration = datetime.strptime(departure_time , FMT) - datetime.strptime(arrival_time , FMT)
         hours = time.strptime(str(duration), FMT)
+        minutes = time.strptime(str(duration), FMT)
         x=hours.tm_hour
-        if x==1:
-            amount = str(30)
+        y=minutes.tm_min
+        if (x==1 or x < 1 and y > 0):
+            amount=str(30)
         elif x>=2:
-            amount=str(int(30)+x*int(10))
+            amount=str(int(30)+(x-1)*int(10))
+        else:
+            amount=0
         print(v_id,model,arrival_time,departure_time,slot_no,place,current_date,amount)
         
         #c.execute("INSERT INTO Data VALUES('"+v_id+"','"+model+"','"+arrival_time+"','"+departure_time+"','"+slot_no+"','"+place+"','"+current_date+"','"+amount+"')")
@@ -63,15 +67,28 @@ def Values(message):
         sendPushNotifications(v_id,message_string)
 
         print("row inserted")
-        c.execute("UPDATE Slots SET status = '0' WHERE slot_num = '"+slot_no+"' and place='"+place+"'")
-        print("row updated") 
+
+        if(slot_no >= 5):
+            c.execute("UPDATE Slots SET status = '0' WHERE slot_num = '+slot_no+' and place='+place+'")
+            print("row updated")
+        else:
+            c.execute("UPDATE Online_slots SET status = '0' WHERE slot_num = '+slot_no+' and place='+place+'and current_date = '+current_date+'")
+            print("row updated")
     elif(Topic=="slot_status"):
         slot_num=(parsed_json['slot_number'])
         status=(parsed_json['occupancy'])
         place=(parsed_json['place_name'])
         print(slot_num,status)
-        c.execute("INSERT INTO Slots VALUES('"+slot_num+"','"+status+"','"+place+"')")
-        print("row inserted")  
+        if(slot_num >= 5):
+            c.execute("SELECT * FROM Slots WHERE slot_num = '%s' AND place = '%s'" %(slot_num,place))
+            if c.fetchall():
+                c.execute("UPDATE Slots SET status = '1' WHERE slot_num = '+slot_num+' and place='+place+'")
+            else:
+                c.execute("INSERT INTO Slots VALUES('"+slot_num+"','"+status+"','"+place+"')")
+                print("row inserted")
+        else:
+            c.execute("UPDATE Online_slots SET status = '1' WHERE slot_num = '+slot_num+' and place='+place+'and current_date = '+current_date+'")
+            print("row updated")
     conn.commit()
           
 def CloseConnection():
@@ -90,7 +107,6 @@ def on_log(client, userdata, level, buf):
     print("log: ",buf)
 
 def sendPushNotifications(v_id,message_string):
-
     try:
         c.execute("SELECT email FROM users_vid WHERE v_id = '%s'" %v_id)
         result=c.fetchall()

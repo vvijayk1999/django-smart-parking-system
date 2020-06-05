@@ -21,7 +21,7 @@ c = conn.cursor()
 
 try:
     c.execute('''CREATE TABLE Booking
-            (v_id text PRIMARY KEY,b_time text,duration text,s_no int,place text,b_date text)''')
+            (v_id text ,b_time text,duration text,s_no int,place text,b_date text)''')
     c.execute('''CREATE TABLE Online_slots
          (slot_num int,status text,place text,current_date text,PRIMARY KEY(slot_num,place))''')
     print ("table Booking created")
